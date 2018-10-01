@@ -1,31 +1,36 @@
 from gpiozero import Button
 from signal import pause
 from random import choice
-
-import vlc
+import glob
+import subprocess
+import keyboard
 
 def play_video():
     videos = []
-    for file in glob.glob("path to videos"):
+    for file in glob.glob("/media/pi/Videos/*.mp4"):
         videos.append(file)
-    to_play = choice(videos)
-    print(to_play)
-    player = vlc.MediaPlayer(to_play)
-    player.play()
+    print(videos)
+    chosen = choice(videos)
+    print(chosen)
+    subprocess.Popen(['omxplayer',(chosen)])
 
 def stop_video():
-    player.stop()
+    keyboard.press_and_release('q')
 
 def pause_video():
-    player.pause()
+
+    keyboard.press_and_release('space')
     
 
 randomiser = Button(2)
 stop = Button(3)
-pause = Button(4)
+pause_button = Button(4)
+try:
+    print("Press the GREEN button to start\nYELLOW to pause\nRED to stop")
+    randomiser.when_pressed = play_video
+    stop.when_pressed = stop_video
+    pause_button.when_pressed = pause_video
+    pause()
+except KeyboardInterrupt:
+    print("EXIT")
 
-randomiser.when_pressed = play_video
-stop.when_pressed = stop_video
-pause.when_pressed = pause_video
-
-pause()
