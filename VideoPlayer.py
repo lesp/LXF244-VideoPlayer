@@ -18,7 +18,6 @@ def stop_video():
     keyboard.press_and_release('q')
 
 def pause_video():
-
     keyboard.press_and_release('space')
     
 
@@ -32,5 +31,5 @@ try:
     pause_button.when_pressed = pause_video
     pause()
 except KeyboardInterrupt:
-    print("EXIT")
+    print("\nEXIT")
 
